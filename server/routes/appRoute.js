@@ -1,0 +1,19 @@
+const express = require('express');
+const { getAllTour,CrateTour } = require('../controller/tour');
+const { registerNewUser,allUser,signIn, GoogleLogin } = require('../controller/user');
+ 
+const router = express.Router();
+
+router.route('/').get(getAllTour).post(CrateTour);
+router.route('/').post(CrateTour);
+
+
+
+//
+router.route('/join/signup/').post(registerNewUser);
+router.route('/join/login/').post(signIn);
+router.route('/join/google/').post(GoogleLogin);
+router.route("/all/users/").get(allUser);
+// router.route('/:id').get( ).patch(updateTask).delete( );
+
+module.exports = router;
