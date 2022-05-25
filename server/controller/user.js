@@ -124,7 +124,7 @@ const UpdateUser = async (req, res) =>{
 const SingleUser = async (req, res) =>{
     try { 
         let id = req.params.id;
-        let user = await User.findByIdAndDelete({_id : id});
+        let user = await User.findOne({_id : id , googleId:id});
         if (!user) {
             return  res.status(404).json({message : 'user not found '});
         }

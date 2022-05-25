@@ -6,7 +6,9 @@ const appRoute = require('./routes/appRoute');
 const morgan = require('morgan');
 const cors = require('cors');
 
-
+const redis = require('redis');
+const { connectRedis } = require('./middleware/redis/tourRedis');
+const client = redis.createClient();
 
  
 // configure app to use morgan logger
@@ -44,7 +46,8 @@ const start = async () => {
     try {
         // await connectDb(process.env.MONGO_URI);
         await connectDb();
-        
+        await connectRedis();
+         
         app.listen(port, () => console.log(`Example app listening on port ${port}`))
     } catch (error) {
         console.log(error);

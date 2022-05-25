@@ -141,6 +141,7 @@ useEffect(() => {
                 onSuccess={googleSucces}
                 onFailure={googleFailure}
                 isSignedIn ={true}
+                autoLoad={false}
                 cookiePolicy={"single_host_origin"}
 
                 />

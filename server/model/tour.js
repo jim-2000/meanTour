@@ -2,22 +2,28 @@ const mongoose = require('mongoose');
 
 
 const tourSchema = new mongoose.Schema({
+    creator:String,
+    name:String,
     title :{
         type: String,
         required: [true, 'A tour must have a title'],
+        
     },
     description:{
         type: String,
         required: [true, 'A tour must have some description'],        
     },
-    creator:String,
+    destination:{
+        type: String,
+        required: [true, 'A tour must have a destination'],
+    },
     duration:{
-        type: Number,
-        required: [true, 'A tour must have a duration'],
+        type: Number,       
+        default: 1,
     },
     maxGroupSize:{
         type: Number,
-        required: [true, 'A tour must have a maxGroupSize'],
+        default: 2,
     },
     tags:[String],
     imageFile:String,
@@ -26,13 +32,13 @@ const tourSchema = new mongoose.Schema({
         default: Date.now(),        
     },
     likes:{
-        type: Number,
+        type: [Number],
         default: 0,
     },
-    // price:{
-    //     type: Number,
-
-    // }    
+    price:{
+        type: Number,
+        default: 1000,
+    }    
 
 
 });
