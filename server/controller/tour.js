@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 // import express from 'express';
 const TourModal = require('../model/tour');
 const redis = require('redis');
@@ -46,7 +48,17 @@ const SingelTour = ('/' , async(req,res)=>{
     }
 });
 
+// get tour by user 
 
+const getTourByUser = async (req,res) =>{
+const {id} = req.params;
+console.log(id);
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+       return res.status(500).json({message: "User does't not Exist"});
+    }
+    const userTours = await TourModal.find({creator:id})
+    return  res.status(200).json(userTours);
+}
 
 
 
@@ -89,4 +101,5 @@ module.exports ={
     deleteAlltour,
     SingleTourDelete,
     SingelTour,
+    getTourByUser,
 }
