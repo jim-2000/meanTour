@@ -2,10 +2,12 @@ import React,{useEffect} from 'react'
 import { MDBBtn, MDBCard, MDBCardBody, MDBCardGroup, MDBCardImage, MDBCardText, MDBCardTitle, MDBCol, MDBContainer, MDBIcon, MDBRow, MDBSpinner } from 'mdb-react-ui-kit'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { getTourByUser } from '../../redux/slice/tourSlice'
+import { DeleteATour, getTourByUser } from '../../redux/slice/tourSlice'
 import './styles/dashboard.css';
- 
 import MySpinner from '../../components/MySpinner'
+import { toast } from 'react-toastify'
+
+//
 const Dashboard = () => {
     const {user} = useSelector((state)=>state.auth);
     const {userTours,loading} = useSelector((state)=>state.tour);
@@ -13,8 +15,7 @@ const Dashboard = () => {
    const dispatch= useDispatch();
 //
 useEffect(()=>{
-    if (userId) {
-        console.log(userId);
+    if (userId) {      
         dispatch(getTourByUser(userId));
     }
 },[userId])
@@ -24,7 +25,11 @@ const excerpt = (str,max)=>{
   }
   return str;
 }
-const handleDelete = ()=>{}
+const handleDelete = (id)=>{
+  // if (window.confirm("Are you sure you want to delete this post ?")) {
+  // }
+  dispatch(DeleteATour({id,toast}))    
+}
 
   return (  
     <div style={{

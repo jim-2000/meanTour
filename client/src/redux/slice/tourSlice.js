@@ -66,14 +66,40 @@ export const getTourByUser = createAsyncThunk(
   }
 );
 
+// UPDATE TOUR
+
+export const UpdateTour = createAsyncThunk(
+  "tour/updateTour",
+  async ({id, updatedTourData, navigate, toast }, { rejectWithValue }) => {
+    try {
+      const response = await api.ApiUPDATETour(updatedTourData,id);
+      toast.success("Updated Tour successfully", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
+          navigate("/");
+          return response.data;
+    } catch (err) {
+      toast.error(err.response.data['meassage'].toString());
+      
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
 
 // DELETE TOUR
 
 export const DeleteATour = createAsyncThunk(
   "tour/deleteATour",
-  async (id,{ rejectWithValue }) => {
+  async ({id,toast},{ rejectWithValue }) => {
     try {
-      const response = await api.ApiDeleteSingelTour(id);       
+      const response = await api.ApiDeleteSingelTour(id); 
+      toast.success("TOUR DELETED SUCCESSFULLY");           
       return response.data;
     } catch (err) {    
       return rejectWithValue(err.response.data);
@@ -81,7 +107,19 @@ export const DeleteATour = createAsyncThunk(
   }
 );
 
+// DELETE TOUR
 
+export const SearchTour = createAsyncThunk(
+  "tour/searchTours",
+  async (searchQuery,{ rejectWithValue }) => {
+    try {
+      const response = await api.ApiSearchByTour(searchQuery);                 
+      return response.data;
+    } catch (err) {    
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
 
 
 // SLice
@@ -146,14 +184,32 @@ const TourSlice = createSlice({
             state.error =action.payload.meassage       
         },
         [DeleteATour.pending]:(state,action) => {
-          state.loading = true         
+          state.loading = true      
+          console.log("pending",action);   
           },
         [DeleteATour.fulfilled]:(state,action) => {
         state.loading = false
-        state.userTours = action.payload
+        console.log("action",action);
+        const {arg: { id },} = action.meta;
+        if (id) {
+          state.userTours = state.userTours.filter((item) => item._id !== id);
+          state.tours = state.tours.filter((item) => item._id !== id);
+        }
         state.error =""   
         },
         [DeleteATour.rejected]:(state,action) => {
+            state.loading = false 
+            state.error =action.payload.meassage       
+        },
+        [SearchTour.pending]:(state,action) => {
+          state.loading = true         
+        },
+        [SearchTour.fulfilled]:(state,action) => {
+        state.loading = false
+        state.tours = action.payload
+        state.error =""   
+        },
+        [SearchTour.rejected]:(state,action) => {
             state.loading = false 
             state.error =action.payload.meassage       
         },

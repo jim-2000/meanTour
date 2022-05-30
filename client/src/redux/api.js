@@ -42,4 +42,12 @@ export const ApiGetTourByUserID = (userId) => API.get(`/tour/user/tour/${userId}
 
 // delete singel tour
 export const ApiDeleteSingelTour = (id) => API.get(`/tour/delete/${id}`);
+// update a tour
+export const ApiUPDATETour = (updatedTourData,id) => API.patch(`/tour/update/${id}`,updatedTourData);
+//  SEARCH TOUR 
+export const ApiSearchByTour = (searchQuery)=>API.get(`/tour/search?searchQuery=${searchQuery}`) ;
+ 
+
+
+
 

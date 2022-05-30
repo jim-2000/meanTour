@@ -38,7 +38,8 @@ function App() {
   
       <Header />
       <Routes >      
-          <Route exact path='/' element={<Home />} />,
+          <Route  path='/' element={<Home />} />,
+          <Route  path='/tour/search' element={<Home />} />,
           <Route path='/addTour' element={
           <PrivateRoute>
             <AddEditTour />

@@ -12,16 +12,29 @@ const upload ={};
 upload.TourImage = async (file) => {
     try {
       const res = await cloudinary.uploader.upload(file,{
-        folder:"tour",
-      
+        folder:"tour", 
+        public_id:`${Date.now()}`
+
       });
-      // return the secure url
+      // console.log(res,"image upload");
       return res.secure_url;
     } catch (error) {
       return error;
     }
   }
-  
+
+  //...........
+  upload.RemoveTourImage = async (id) =>{
+    try {
+      const res = await cloudinary.uploader.destroy(id,(e,r)=>{
+        console.log(r);
+      })
+      console.log("remove cloudynary",res);
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   module.exports ={
     upload,

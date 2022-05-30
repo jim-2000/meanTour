@@ -13,7 +13,8 @@ import {
   import { toast } from "react-toastify";
   import { useNavigate, useParams } from "react-router-dom";
   import { useDispatch, useSelector } from "react-redux";
-import { createTour } from '../../redux/slice/tourSlice';
+    import { createTour, UpdateTour } from '../../redux/slice/tourSlice';
+import MySpinner from '../../components/MySpinner';
 
   //
 
@@ -34,21 +35,32 @@ const AddEditTour = (props) => {
     const tourDuration =[3,5,7,10,15,20,30];
     const tourmaxGroupSize =[3,5,7,10,15,20,30,50,100];
 //
-const dispatch = useDispatch();
-const navigate = useNavigate();
-const {error,loading,user} = useSelector(state => state.auth);
-// const {user} = useSelector(state => state.tour);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const {id} = useParams();
+    const {error,loading,user} = useSelector(state => state.auth);
+    const {tours} = useSelector(state => ({...state.tour}));
 
+useEffect(() => {
+    if (id) {
+        const SingelTour =tours.find((tour)=>tour._id === id);
+        setTourData({...SingelTour})        
+    }
+}, [id])
 
     //
 const handleSubmit = () => {
     //
     try {
-        if (title && description && destination && duration && maxGroupSize ) {
-       
+        if (title && description  ) {       
         const updatedTourData = {...tourData,name:user.result.name,price:555,imageFile:imageFile};
-        console.log(updatedTourData);
-        dispatch(createTour({updatedTourData, navigate, toast}));
+            if (!id) {
+                dispatch(createTour({updatedTourData, navigate, toast}));
+            }else{
+                dispatch(UpdateTour({id,updatedTourData, navigate, toast}));
+            console.log(updatedTourData);
+
+            }
         }else{
             toast.error("Please fill all the fields");
         }
@@ -80,7 +92,7 @@ const handleclear = () => {
 //
  
 useEffect(() => {
-    console.log(props);
+     
   error &&  toast.error(error);
 }, [error])
 
@@ -91,7 +103,9 @@ useEffect(() => {
     }}
     >
                         
-  
+        {
+            loading && <MySpinner />
+        }
                         
 
           <MDBCard alignment='center' className='border p-2'>           
@@ -218,7 +232,7 @@ useEffect(() => {
                             setTourData((prevState) => ({...prevState,tags:prevState.tags.concat(chip)}));
                         }}
                         onDelete={(chip,index)=>{
-                            setTourData((prevState) => ({...prevState,tags:prevState.tags.filter((i)=>i!==index)}));
+                            setTourData((prevState) => ({...prevState,tags:prevState.tags.filter((i)=>i!==chip)}));
                         }}
                         placeholder='Enter Tour Tags...'
                         style={{}}
@@ -235,6 +249,7 @@ useEffect(() => {
                           multiple={false}
                           onDone={({ base64 }) =>{
                             setTourData({ ...tourData, imageFile: base64 })
+                         
                           }
                          
                           }

@@ -14,7 +14,7 @@ const {upload} = require("./coudinary")
 const CrateTour = async (req, res) => {
     const tour = req.body;
     try {
-    const file = await upload.TourImage(tour.imageFile); 
+    const file = await upload.TourImage(tour.imageFile);    
     const newTour = await new TourModal({
         ...tour,
         imageFile:file,
@@ -72,8 +72,12 @@ console.log(id);
 
 //
 const deleteAlltour = async (req,res)=>{
-    try {
-        const  tour = await TourModal.deleteMany({});
+    const {id} = req.body;
+    try {   
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(404).json({message: "User does't not Exist"});
+        }
+        const  tour = await TourModal.deleteMany({creator:id})
         res.status(202).json(tour);
     } catch (error) {
         console.log(error);
@@ -89,8 +93,8 @@ const SingleTourDelete = async (req,res)=>{
         return res.status(404).json({message: "Post Id does't not Exist"});
     }
     try {
-        const  tour = await TourModal.findByIdAndDelete(id);       
-        res.status(202).json(tour);
+        const  tour = await TourModal.findByIdAndRemove(id);       
+        res.status(200).json(tour);
     } catch (error) {
         console.log(error);
     }
@@ -98,43 +102,71 @@ const SingleTourDelete = async (req,res)=>{
 // updateing tour
 const updateTourData = async (req,res)=>{
     const {id} = req.params;
-    const {title,desciption,creator,imageFile,tags} = req.body;
-    if (imageFile) {
-        const file = await upload.TourImage(req.files.imageFile.tempFilePath);
-    }
+    const { title, description, creator, imageFile, tags } = req.body;
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({message: "Id does't not Exist"});
-    }
-    const updatedTour={
-        creator,
-        title,
-        desciption,
-        tags,
-        imageFile:file,
-        _id:id,
-
-    }
+    }   
+    let file;
     try {
-        const  Updatetour = await TourModal.findByIdAndUpdate(id,updatedTour,{new:true});      
-        res.status(200).json(Updatetour);
+         imageFile && await upload.TourImage(imageFile);
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(404).json({ message: `No tour exist with id: ${id}` });
+          }
+      
+          const updatedTour = {
+            creator,
+            title,
+            description,
+            tags,
+            imageFile:file,
+            _id: id,
+          };
+          console.log(updatedTour,file);
+          await TourModal.findByIdAndUpdate(id, updatedTour, { new: true });
+          res.json(updatedTour);
     } catch (error) {
         console.log(error);
     }
 }
 
+// GET TOUR BY SEARCH>>>>>>>>>>>>>>>>>
+
+
+
+
+const getTourBySearch = async (req,res)=>{
+    const {searchQuery} = req.query;
+    try {
+        const title = new RegExp(searchQuery,"i");
+        const tours = await TourModal.find({title})
+        return res.status(200).json(tours); 
+    } catch (error) {
+        console.log(error);
+        return res.status(404).json(error); 
+    }
+}
+
+
+
+
+
+
+
 // cloud image chekcing 
 const Cloud =  async(req,res)=>{    
-    const file = await upload.TourImage(req.files.imageFile.tempFilePath);
-    const tour = req.body; 
-   const result = {
-       ...tour,
-       image:file,
-       creator:req.userId,
-       createdAt:new Date().toISOString(), 
-   }
-    
+    // const file = await upload.TourImage(req.files.imageFile.tempFilePath);
+//     const tour = req.body; 
+//    const result = {
+//        ...tour,
+//        image:file,
+//        creator:req.userId,
+//        createdAt:new Date().toISOString(), 
+//    }
+    // deeleted cloud photo
+    const {imageFile} = req.body;
+    const file = await upload.RemoveTourImage(imageFile);
  
-res.status(200).json(result);
+res.status(200).json(file);
 }
 
 
@@ -151,6 +183,7 @@ module.exports ={
     SingleTourDelete,
     SingelTour,
     getTourByUser,
-    Cloud,
     updateTourData,
+    getTourBySearch,
+    Cloud,
 }

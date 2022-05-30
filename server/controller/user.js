@@ -147,6 +147,15 @@ const deleteUser = async (req, res) =>{
     }
 }
 
+// delete all user
+const AllUserDeleted = async (req, res) =>{
+    try { 
+        let user = await User.deleteMany();        
+        res.status(200).json({message : 'All user delete succesfully',data:user});
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+}
 
 
 
@@ -156,5 +165,6 @@ module.exports ={
     signIn,
     allUser,
     SingleUser,
-    GoogleLogin
+    GoogleLogin,
+    AllUserDeleted
 }
