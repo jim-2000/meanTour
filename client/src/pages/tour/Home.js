@@ -1,10 +1,11 @@
-import { MDBBtn, MDBCol, MDBContainer, MDBRow, MDBTypography } from 'mdb-react-ui-kit'
+import { MDBBtn, MDBCol, MDBContainer, MDBRow, MDBSpinner, MDBTypography } from 'mdb-react-ui-kit'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setlogOut } from '../../redux/slice/authSlice';
 import { getTour } from '../../redux/slice/tourSlice';
 import { Link } from 'react-router-dom'
 import CardTour from '../../components/cardTour';
+import MySpinner from '../../components/MySpinner';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -19,7 +20,7 @@ useEffect(()=>{
 
   //
    if (loading) {
-     return <h4>loading..</h4>
+     return <MySpinner /> 
    }
   return (
     
@@ -39,14 +40,14 @@ useEffect(()=>{
             </MDBTypography>
           )
         }
-        <MDBCol>
+        <>
           <MDBContainer >
             <MDBRow className='row-cols-1 row-cols-md-3 g-2'>
               {
               tours && tours.map((item,index)=> <CardTour  key={item._id} {...item} /> )}
             </MDBRow>
           </MDBContainer>
-        </MDBCol>
+        </>
       </MDBRow>
      
    </div>

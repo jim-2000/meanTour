@@ -4,18 +4,25 @@ const port = 4000;
 const app = express();
 const appRoute = require('./routes/appRoute');
 const morgan = require('morgan');
-const cors = require('cors');
-
-const redis = require('redis');
-const { connectRedis } = require('./middleware/redis/tourRedis');
-const client = redis.createClient();
-
- 
+const cors = require('cors'); 
+const fileUpload = require('express-fileupload')
+const multer  = require('multer')
 // configure app to use morgan logger
 app.use(morgan('dev'));
-app.use(express.json({limit:"30mb", extended:true}));
-app.use(express.urlencoded({limit:"30mb", extended:true}));
-app.use(cors());
+app.use(express.json({limit:"200mb", extended:false}));
+app.use(express.urlencoded({ limit:"200mb", extended:false}));
+const corsOptions ={
+    origin:'http://localhost:3000', 
+    credentials:true,            //access-control-allow-credentials:true
+    optionSuccessStatus:200,
+    methods: "GET,PUT,POST,DELETE,PATCH,OPTIONS"
+    
+}
+app.use(cors(corsOptions));
+app.use(fileUpload({
+    useTempFiles:true,
+    // tempFileDir:"img/"
+}))
 app.use('/api/v1/tour', appRoute);
 
 
@@ -46,7 +53,7 @@ const start = async () => {
     try {
         // await connectDb(process.env.MONGO_URI);
         await connectDb();
-        await connectRedis();
+       
          
         app.listen(port, () => console.log(`Example app listening on port ${port}`))
     } catch (error) {

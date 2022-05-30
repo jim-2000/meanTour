@@ -4,6 +4,7 @@ import {
     MDBCardBody,
     MDBValidation,
     MDBBtn,
+    MDBSpinner,
 
   } from "mdb-react-ui-kit";
 
@@ -27,7 +28,7 @@ import { createTour } from '../../redux/slice/tourSlice';
     imageFile: "",
     tags: [],
   }
-const AddEditTour = () => {
+const AddEditTour = (props) => {
     const [tourData, setTourData] = useState(initialState);
     const {title,description,duration,maxGroupSize,tags,destination,imageFile} = tourData;
     const tourDuration =[3,5,7,10,15,20,30];
@@ -44,9 +45,9 @@ const handleSubmit = () => {
     //
     try {
         if (title && description && destination && duration && maxGroupSize ) {
-            // setTourData({...tourData,creator:user.result.name,price:555});                   
-            // dispatch(createTour({tourData, navigate, toast}));
-        const updatedTourData = {...tourData,name:user.result.name,price:555};
+       
+        const updatedTourData = {...tourData,name:user.result.name,price:555,imageFile:imageFile};
+        console.log(updatedTourData);
         dispatch(createTour({updatedTourData, navigate, toast}));
         }else{
             toast.error("Please fill all the fields");
@@ -79,7 +80,7 @@ const handleclear = () => {
 //
  
 useEffect(() => {
-
+    console.log(props);
   error &&  toast.error(error);
 }, [error])
 
@@ -89,6 +90,10 @@ useEffect(() => {
         margin:"auto",padding:"15px",maxWidth:"450px",alignContent:"center",marginTop:"120px"
     }}
     >
+                        
+  
+                        
+
           <MDBCard alignment='center' className='border p-2'>           
             <h4  className="mt-3">Add Tour</h4>
             <MDBCardBody >
@@ -224,17 +229,20 @@ useEffect(() => {
                     </div>
                     <div className='d-flex  justify-content-start'>
                         <FileBase 
+                        key={"imageFile"}
+                        name={"imageFile"}
                           type="file"
                           multiple={false}
-                          onDone={({ base64 }) =>
+                          onDone={({ base64 }) =>{
                             setTourData({ ...tourData, imageFile: base64 })
+                          }
+                         
                           }
                         />
                     </div>
                     <div className='col-md-12 '>
                     <MDBBtn style={{
                         width:'100%',
-
                     }}
                     color='success'
                     

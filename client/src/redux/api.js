@@ -1,7 +1,13 @@
 import axios from 'axios';
-
+const config = {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+      "Content-type":"application/json"
+    }
+  };
 const API_URL = 'http://localhost:4000/api/v1';
-const API = axios.create({baseURL: API_URL});
+const API = axios.create({baseURL: API_URL,config});
 //
 API.interceptors.request.use((req)=>{
     if (localStorage.getItem("profile")) {
@@ -31,7 +37,9 @@ export const ApiGeteTour = () => API.get("/tour");
 export const ApiGetSingelTour = (id) => API.get(`/tour/singel/${id}`);
 
 
+// get  tour by user id
+export const ApiGetTourByUserID = (userId) => API.get(`/tour/user/tour/${userId}`);
 
-
-
+// delete singel tour
+export const ApiDeleteSingelTour = (id) => API.get(`/tour/delete/${id}`);
 

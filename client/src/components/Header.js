@@ -18,7 +18,7 @@ const Header = () => {
   const dispatch = useDispatch();
   return (
     <MDBNavbar fixed='top' expand='lg' style={{backgroundColor:"#f0e6ea"}}>
-      <MDBContainer>
+      <MDBContainer fluid  >
         <MDBNavbarBrand
             href="/"
             style={{ color: "#606080", fontWeight: "600", fontSize: "22px" }}

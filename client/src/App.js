@@ -14,6 +14,8 @@ import AddEditTour from './pages/tour/AddEditTour';
 import { getTour } from './redux/slice/tourSlice';
 import Singeltour from './pages/tour/Singeltour';
 import DetailsTour from './pages/tour/DetailsTour';
+import Dashboard from './pages/tour/Dashboard';
+import PrivateRoute from './components/PrivateRoute';
 function App() {
   const {user}= useSelector(state => state.auth)
   const dispatch = useDispatch();
@@ -29,18 +31,30 @@ function App() {
     <BrowserRouter 
     >
     <div className="App">
-      <Header />
       <ToastContainer       
        autoClose={3000}
        position="top-right"
       />
   
-      <Routes>
-      
+      <Header />
+      <Routes >      
           <Route exact path='/' element={<Home />} />,
-          <Route path='/addTour' element={<AddEditTour />} />        
+          <Route path='/addTour' element={
+          <PrivateRoute>
+            <AddEditTour />
+          </PrivateRoute>
+          }/>        
+          <Route path='/editTour/:id' element={
+            <PrivateRoute>
+              <AddEditTour />
+            </PrivateRoute>
+          } />        
           <Route path='/tour/:id' element={<Singeltour />} />        
-          <Route path='/tour/details/'  element={<DetailsTour />} />        
+          <Route path='/dashboard'  element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          } />  
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login />} />
       </Routes>
