@@ -146,7 +146,31 @@ const getTourBySearch = async (req,res)=>{
     }
 }
 
+// GET TOUR BY TAG>>>>>>>>>>>>>>>>>
+const getTourByTag = async (req,res)=>{
+    const {tag} = req.params;
+    try {
+        const tours = await TourModal.find({tags: { $in:tag }})
+        return res.status(200).json(tours); 
+    } catch (error) {
+        console.log(error);
+        return res.status(404).json(error); 
+    }
+}
 
+
+
+// GET RELATEDTOUR BY >>>>>>>>>>>>>>>>>
+const getRelatedTourByTag = async (req,res)=>{
+    const tags = req.body;
+    try {
+        const tours = await TourModal.find({tags: { $in:tags }})
+        return res.status(200).json(tours); 
+    } catch (error) {
+        console.log(error);
+        return res.status(404).json(error); 
+    }
+}
 
 
 
@@ -185,5 +209,7 @@ module.exports ={
     getTourByUser,
     updateTourData,
     getTourBySearch,
+    getTourByTag,
+    getRelatedTourByTag,
     Cloud,
 }

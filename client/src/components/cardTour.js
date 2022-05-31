@@ -12,11 +12,12 @@ import {
 } from "mdb-react-ui-kit";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-
+import { useNavigate } from 'react-router-dom'
+import { SearchTour } from '../redux/slice/tourSlice';
 
 
 const CardTour = ({imageFile,description,title,tags,_id,name}) => {
-  const tour = {imageFile,description,title,tags,_id,name};
+  // const tour = {imageFile,description,title,tags,_id,name};
   const excerpt = (str,max)=>{
     if (str.length >max) {
       str = str.substring(0,45)+ "....";      
@@ -25,7 +26,7 @@ const CardTour = ({imageFile,description,title,tags,_id,name}) => {
   }
   return (
     <MDBCardGroup>
-      <MDBCard className="h-100 mt-2 d-sm-flex" style={{ maxWidth: "20rem", padding:"0 2px" }}>
+      <MDBCard  className="h-100 mt-2 d-sm-flex" style={{ maxWidth: "20rem", padding:"0 2px" }}>
             <MDBCardImage
             src={imageFile}
             alt={title}
@@ -35,7 +36,7 @@ const CardTour = ({imageFile,description,title,tags,_id,name}) => {
             <div className="top-left">{name}</div>
             <span className="text-start tag-card">
             {tags.map((tag) => (
-            <Link to={`/tours/tag/${tag}`}> #{tag}</Link>
+            <Link to={`/tag/${tag}`} > #{tag}</Link>
           ))}
             </span>
             <MDBCardBody>

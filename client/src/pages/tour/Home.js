@@ -13,8 +13,6 @@ const Home = () => {
 //
 useEffect(()=>{
   dispatch(getTour());
-  console.log(tours.length);
-  console.log(tour);
 },[])
 
 
@@ -44,7 +42,8 @@ useEffect(()=>{
           <MDBContainer >
             <MDBRow className='row-cols-1 row-cols-md-3 g-2'>
               {
-              tours && tours.map((item,index)=> <CardTour  key={item._id} {...item} /> )}
+              tours && tours.map((item,index)=> <CardTour  key={item._id} {...item} /> )
+              }
             </MDBRow>
           </MDBContainer>
         </>

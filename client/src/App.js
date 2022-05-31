@@ -16,6 +16,7 @@ import Singeltour from './pages/tour/Singeltour';
 import DetailsTour from './pages/tour/DetailsTour';
 import Dashboard from './pages/tour/Dashboard';
 import PrivateRoute from './components/PrivateRoute';
+import TagTour from './pages/tour/TagTour';
 function App() {
   const {user}= useSelector(state => state.auth)
   const dispatch = useDispatch();
@@ -40,6 +41,7 @@ function App() {
       <Routes >      
           <Route  path='/' element={<Home />} />,
           <Route  path='/tour/search' element={<Home />} />,
+          <Route  path='/tag/:tag' element={<TagTour />} />,
           <Route path='/addTour' element={
           <PrivateRoute>
             <AddEditTour />

@@ -107,7 +107,7 @@ export const DeleteATour = createAsyncThunk(
   }
 );
 
-// DELETE TOUR
+// SEARCH TOUR
 
 export const SearchTour = createAsyncThunk(
   "tour/searchTours",
@@ -122,6 +122,33 @@ export const SearchTour = createAsyncThunk(
 );
 
 
+// TAG TOUR
+
+export const TagTours = createAsyncThunk(
+  "tour/tagTours",
+  async (tag,{ rejectWithValue }) => {
+    try {
+      const response = await api.ApiGetTourByTAG(tag);                 
+      return response.data;
+    } catch (err) {    
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+// TAG TOUR
+
+export const RelatedTours = createAsyncThunk(
+  "tour/relatedTours",
+  async (tags,{ rejectWithValue }) => {
+    try {
+      const response = await api.ApiGetRelatedTourByTAG(tags);                 
+      return response.data;
+    } catch (err) {    
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
 // SLice
 // auth state
 const initialState = {     
@@ -129,6 +156,8 @@ const initialState = {
     tours:[],
     error:"",
     userTours:[],
+    tagTours:[],
+    relatedTours:[],
     loading:true,
 }
 const TourSlice = createSlice({
@@ -210,6 +239,30 @@ const TourSlice = createSlice({
         state.error =""   
         },
         [SearchTour.rejected]:(state,action) => {
+            state.loading = false 
+            state.error =action.payload.meassage       
+        },
+        [TagTours.pending]:(state,action) => {
+          state.loading = true         
+        },
+        [TagTours.fulfilled]:(state,action) => {
+        state.loading = false
+        state.tagTours = action.payload
+        state.error =""   
+        },
+        [TagTours.rejected]:(state,action) => {
+            state.loading = false 
+            state.error =action.payload.meassage       
+        },
+        [RelatedTours.pending]:(state,action) => {
+          state.loading = true         
+        },
+        [RelatedTours.fulfilled]:(state,action) => {
+        state.loading = false
+        state.relatedTours = action.payload
+        state.error =""   
+        },
+        [RelatedTours.rejected]:(state,action) => {
             state.loading = false 
             state.error =action.payload.meassage       
         },

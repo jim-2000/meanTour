@@ -4,17 +4,22 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getSingelTour } from '../../redux/slice/tourSlice'
 import { MDBBtn, MDBCard, MDBCardBody, MDBCardImage, MDBCardText, MDBContainer, MDBIcon } from 'mdb-react-ui-kit'
 import moment from "moment";
+import MySpinner from '../../components/MySpinner'
 const DetailsTour = (tour) => {
   const navigate = useNavigate()
 //   const {id} = useParams()
 //   const dispatch = useDispatch();
-//   const { loading,tour} = useSelector((state)=>({...state.tour}));
+  const { loading,relatedTours} = useSelector((state)=>({...state.tour}));
 //
 
 useEffect(()=>{
-    console.log(tour);
-//   dispatch(getSingelTour(id));
+    console.log(relatedTours,"relatedTour");
+ 
 },[])
+    //
+    if (loading) {
+      return <MySpinner />
+    }
   //
   return (
     <>
