@@ -33,12 +33,18 @@ const CrateTour = async (req, res) => {
 
 //
 const getAllTour = ("/",  async (req, res) => {
+    const {page} = req.query;
     try {
-      
-        const tours = await TourModal.find({});
-        console.log(tours.length);
-        // client.setEx('toursData',60,JSON.stringify(tours));
-        return res.status(200).json(tours);             
+        const limit = 6 ;
+        const startIndex = (Number(page)-1) * limit;
+        const totalTour = await TourModal.countDocuments({});
+        const tours = await TourModal.find().limit(limit).skip(startIndex)         
+        return res.status(200).json({
+            data:tours,
+            currentPage: Number(page),
+            totalTour:totalTour,
+            numberOfPages : Math.ceil(totalTour / limit),
+        });             
 
     } catch (error) {
         res.status(500).json({message: error.message});
@@ -172,6 +178,35 @@ const getRelatedTourByTag = async (req,res)=>{
     }
 }
 
+// LIKE TOUR 
+  const LikeAtour =async (req,res)=>{
+      const {id} = req.params;
+      if (!req.userId) {
+          return res.json({message:"User is Not Authenticated"})
+      }
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ message: `No tour exist with id: ${id}` });
+      }
+
+      const tour = await TourModal.findById(id);
+      const index = tour.likes.findIndex((id)=>id === String(req.userId));
+      if (index === -1) {
+          tour.likes.push(req.userId);
+      }else{
+          tour.likes = tour.likes.filter((id)=> id !== String(req.userId) );
+      }
+     
+     try {
+        const updatedTour = await TourModal.findByIdAndUpdate(id,tour,{new:true});
+        return res.status(200).json(updatedTour); 
+     } catch (error) {
+        return res.status(404).json(error); 
+     }
+
+
+
+
+  }
 
 
 
@@ -211,5 +246,6 @@ module.exports ={
     getTourBySearch,
     getTourByTag,
     getRelatedTourByTag,
+    LikeAtour,
     Cloud,
 }

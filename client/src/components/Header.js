@@ -14,6 +14,7 @@ import {
 import { setlogOut } from '../redux/slice/authSlice'
 import { useNavigate } from 'react-router-dom'
 import { SearchTour } from '../redux/slice/tourSlice';
+import decode from 'jwt-decode'
 //
 const Header = () => {
   const [show, setShow] = useState(false)
@@ -21,6 +22,17 @@ const Header = () => {
   const {user} = useSelector(state => state.auth)
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const token = user?.token;
+  if (token) {
+    const decodedToke =decode(token);
+  
+    if (decodedToke.exp * 1000 <new Date().getTime()) {
+      dispatch(setlogOut());
+    }
+  }
+
+  //
+
 //
 const handleSubmit= (e)=>{
   e.preventDefault();

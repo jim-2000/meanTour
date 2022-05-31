@@ -95,7 +95,9 @@ useEffect(() => {
      
   error &&  toast.error(error);
 }, [error])
-
+if (loading) {
+    return <MySpinner />;
+}
   return (
     <div className='container'
     style={{

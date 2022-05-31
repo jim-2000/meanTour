@@ -2,18 +2,28 @@ import { MDBBtn, MDBCol, MDBContainer, MDBRow, MDBSpinner, MDBTypography } from 
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setlogOut } from '../../redux/slice/authSlice';
-import { getTour } from '../../redux/slice/tourSlice';
-import { Link } from 'react-router-dom'
+import { getTour, setCurrentPage } from '../../redux/slice/tourSlice';
+import { Link, useLocation } from 'react-router-dom'
 import CardTour from '../../components/cardTour';
 import MySpinner from '../../components/MySpinner';
+import Pagination from '../../components/Pagination';
 
 const Home = () => {
   const dispatch = useDispatch();
-  const {tours,loading,tour} = useSelector((state)=>({...state.tour}));
-//
-useEffect(()=>{
-  dispatch(getTour());
-},[])
+  const {tours,loading,currentPage,numberOfPages} = useSelector((state)=>({...state.tour}));
+
+  // const query = useQuery();
+  // const searchQuery = query.get("searchQuery");
+  const searchQuery = "searchQuery";
+  const location = useLocation();
+
+
+
+
+  //
+    useEffect(()=>{
+      dispatch(getTour(currentPage));
+    },[currentPage])
 
 
   //
@@ -48,6 +58,14 @@ useEffect(()=>{
           </MDBContainer>
         </>
       </MDBRow>
+      {tours.length > 0 && !searchQuery && (
+        <Pagination
+          setCurrentPage={setCurrentPage}
+          numberOfPages={numberOfPages}
+          currentPage={currentPage}
+          dispatch={dispatch}
+        />
+      )}
      
    </div>
   )

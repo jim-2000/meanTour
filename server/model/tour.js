@@ -32,12 +32,16 @@ const tourSchema = new mongoose.Schema({
         default: Date.now(),        
     },
     likes:{
-        type: [Number],
-        default: 0,
+        type: [String],
+        default: [],
     },
     price:{
         type: Number,
         default: 1000,
+    },
+    comments:{
+        type:[String],
+        default:[],
     }    
 
 

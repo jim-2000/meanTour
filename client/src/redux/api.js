@@ -30,7 +30,7 @@ export const ApiGoogle = (result) => API.post("/tour/join/google/",result);
 export const ApiCreateTour = (tourData) => API.post("/tour/",tourData);
 
 // get all tourss
-export const ApiGeteTour = () => API.get("/tour");
+export const ApiGeteTour = (page) => API.get(`/tour?page=${page}`);
 
 
 // get singel tour
