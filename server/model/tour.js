@@ -31,9 +31,9 @@ const tourSchema = new mongoose.Schema({
         type: Date,
         default: Date.now(),        
     },
-    likes:{
+    likes: {
         type: [String],
-        default: [],
+        default: [null],
     },
     price:{
         type: Number,

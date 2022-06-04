@@ -50,6 +50,8 @@ export const ApiSearchByTour = (searchQuery)=>API.get(`/tour/search?searchQuery=
 export const ApiGetTourByTAG = (tag) => API.get(`/tour/tag/${tag}`);
  // get  tour by user id
  export const ApiGetRelatedTourByTAG = (tags) => API.post(`/tour/relatedTours/`,tags);
+  // get  tour by user id
+  export const ApiLikeTour = (_id) => API.patch(`/tour/like/${_id}`);
 
 
 

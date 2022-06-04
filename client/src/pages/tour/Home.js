@@ -10,7 +10,7 @@ import Pagination from '../../components/Pagination';
 
 const Home = () => {
   const dispatch = useDispatch();
-  const {tours,loading,currentPage,numberOfPages} = useSelector((state)=>({...state.tour}));
+  const {tours,loading,currentPage,numberOfPages} = useSelector((state)=>({...state.tour,}));
 
   // const query = useQuery();
   // const searchQuery = query.get("searchQuery");
@@ -44,6 +44,7 @@ const Home = () => {
           tours.length === 0 && (
             <MDBTypography classID='text-center mb-0' tag={"h2"}>
               No Tours Found
+              <br />
               it's loading..
             </MDBTypography>
           )
@@ -52,18 +53,18 @@ const Home = () => {
           <MDBContainer >
             <MDBRow className='row-cols-1 row-cols-md-3 g-2'>
               {
-              tours && tours.map((item,index)=> <CardTour  key={item._id} {...item} /> )
+              tours && tours.map((item,index)=> <CardTour  key={index} {...item} /> )
               }
             </MDBRow>
           </MDBContainer>
         </>
       </MDBRow>
-      {tours.length > 0 && !searchQuery && (
+      {tours.length > 0 &&  searchQuery !=null && (
         <Pagination
           setCurrentPage={setCurrentPage}
           numberOfPages={numberOfPages}
           currentPage={currentPage}
-          dispatch={dispatch}
+  
         />
       )}
      

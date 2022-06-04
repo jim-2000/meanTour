@@ -148,8 +148,21 @@ export const RelatedTours = createAsyncThunk(
     }
   }
 );
-
+// 
+//  LIKE TOUR .............>>>>>>>>>>>>>>>>>>
+export const LikeTour = createAsyncThunk(
+  "tour/likeTour",
+  async ({_id},{ rejectWithValue }) => {
+    try {
+      const response = await api.ApiLikeTour(_id);       
+      return response.data;
+    } catch (err) {    
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
 // SLice
+
 // auth state
 const initialState = {     
     tour:{},
@@ -239,6 +252,24 @@ const TourSlice = createSlice({
             state.loading = false 
             state.error =action.payload.meassage       
         },
+        [UpdateTour.pending]:(state,action) => {
+          state.loading = true      
+          console.log("pending",action);   
+          },
+        [UpdateTour.fulfilled]:(state,action) => {
+        state.loading = false
+        console.log("action",action);
+        const {arg: { id },} = action.meta;
+        if (id) {
+          state.userTours = state.userTours.map((item)=>item._id ==id ? action.payload :item)
+          state.tours = state.tours.map((item) => item._id === id ? action.payload :item);
+        }
+        state.error =""   
+        },
+        [UpdateTour.rejected]:(state,action) => {
+            state.loading = false 
+            state.error =action.payload.meassage       
+        },
         [SearchTour.pending]:(state,action) => {
           state.loading = true         
         },
@@ -272,6 +303,21 @@ const TourSlice = createSlice({
         state.error =""   
         },
         [RelatedTours.rejected]:(state,action) => {
+            state.loading = false 
+            state.error =action.payload.meassage       
+        },
+        [LikeTour.pending]:(state,action) => {},
+        [LikeTour.fulfilled]:(state,action) => {
+        state.loading = false
+        console.log("action",action);
+        const {arg: { id },} = action.meta;
+        if (id) {
+          state.userTours = state.userTours.map((item)=>item._id ==id ? action.payload :item)
+          state.tours = state.tours.map((item) => item._id === id ? action.payload :item);
+        }
+        state.error =""   
+        },
+        [LikeTour.rejected]:(state,action) => {
             state.loading = false 
             state.error =action.payload.meassage       
         },
