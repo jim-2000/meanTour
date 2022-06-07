@@ -30,30 +30,33 @@ const CardTour = ({imageFile,description,title,tags,_id,name,likes}) => {
   }
   //
   const Likes = ()=>{
-    if (likes.length > 0) {
-      return likes.find((like)=> like===userId) ? 
-    ( 
-      <>
-      <MDBIcon far icon="thumbs-up" size="1x" />
-      &nbsp;
-      {likes.length> 2 ?(
-        <MDBTooltip tag={"a"} title={`you and ${likes.length-1} others`}>
-          {likes.length}
-        </MDBTooltip>
-      ):(
-        `${likes.length} Like${likes.length > 2 ? 's' :''}`
-      )}
-      </> 
-    ) : (
-      <>
-        <MDBIcon far icon="thumbs-up" size="1x" />
-        &nbsp;{likes.length} {likes >2 ? 'Like' :'Likes'}
-      </>
-    )
+    if (likes.length > 1) {
+      return likes.find((like) => like === userId) ? (
+        <>
+          <MDBIcon fas icon="thumbs-up" />
+          &nbsp;
+          {likes.length > 2 ? (
+            <MDBTooltip
+              tag="a"
+              title={`You and ${likes.length - 1} other people likes`}
+            >
+              {likes.length} Likes
+            </MDBTooltip>
+          ) : (
+            `${likes.length} Like${likes.length > 1 ? "s" : ""}`
+          )}
+        </>
+      ) : (
+        <>
+          <MDBIcon far icon="thumbs-up" />
+          &nbsp;{likes.length} {likes.length === 1 ? "Like" : "Likes"}
+        </>
+      );
     }
     return (
       <>
         <MDBIcon far icon="thumbs-up" size="1x" />
+        &nbsp;Like
       </>
     )
   }
@@ -71,14 +74,23 @@ const CardTour = ({imageFile,description,title,tags,_id,name,likes}) => {
             />
             <div className="top-left">{name}</div>
             <span className="text-start tag-card">
-            {tags.map((tag) => (
-            <Link to={`/tag/${tag}`} > #{tag}</Link>
+            {tags.map((tag,i) => (
+            <Link key={i} to={`/tag/${tag}`} > #{tag}</Link>
           ))}
-            <MDBBtn 
-             color="none"
-            style={{float:"right"}} tag={"a"} onClick={handleLike}>
-                <Likes />
-            </MDBBtn>
+              <MDBBtn 
+              color="none"
+              style={{float:"right"}} tag={"a"} onClick={!user?.result ? null : handleLike}>
+                    
+                {
+                    !user?.result ? (
+                      <MDBTooltip title="Please login to like tour" tag="a">
+                      <Likes />
+                    </MDBTooltip>
+                    ):(
+                      <Likes />
+                      )
+                }
+                </MDBBtn>
             </span>
 
             <MDBCardBody>

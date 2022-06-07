@@ -1,48 +1,40 @@
 const mongoose = require('mongoose');
-
-// import express from 'express';
 const TourModal = require('../model/tour');
-const redis = require('redis');
-const client = redis.createClient();
-const {redis_get_tour} = require('../middleware/redis/tourRedis');
 const {upload} = require("./coudinary")
- 
-// multer 
  
  
 //
 const CrateTour = async (req, res) => {
     const tour = req.body;
-    try {
-    const file = await upload.TourImage(tour.imageFile);    
-    const newTour = await new TourModal({
+    const file = await upload.TourImage(tour.imageFile); 
+   
+    const newTour = new TourModal({
         ...tour,
         imageFile:file,
-        creator:req.userId,
-        createdAt:new Date().toISOString(),       
-    });
-        await newTour.save();
-        return res.status(200).json({message:'tour created succesfully',data:{newTour}});      
-    } catch (error) {
-        return res.status(404).json({message: error.message});       
-
-    }
-     
+        creator: req.userId,
+        createdAt: new Date().toISOString(),
+      });
     
+      try {
+        await newTour.save();
+        res.status(201).json(newTour);
+
+      } catch (error) {
+        return res.status(404).json({ message: "Something went wrong" });       
+      } 
+  
 }
 
 //
 const getAllTour = ("/",  async (req, res) => {
-     
+     const {page} =req.query;
     try {
-        const page = parseInt(req.query);
-        if (page == undefined && null ) {
-            return page = 1;
-        }
+        
+         console.log(Number(page));
         const limit = 6 ;
-        const startIndex = page * limit;
+        const startIndex = (Number(page) - 1) * limit;
         const totalTour = await TourModal.countDocuments({});
-        const tours = await TourModal.find().limit(limit).skip(startIndex)         
+        const tours = await TourModal.find().limit(limit).skip(startIndex)
         return res.status(200).json({
             data:tours,
             currentPage: Number(page),
@@ -82,13 +74,10 @@ console.log(id);
 
 //
 const deleteAlltour = async (req,res)=>{
-    const {id} = req.body;
-    try {   
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(404).json({message: "User does't not Exist"});
-        }
-        const  tour = await TourModal.deleteMany({creator:id})
-        res.status(202).json(tour);
+    console.log("deleted all");
+    try { 
+        const  tour = await TourModal.deleteMany()
+       return res.status(202).json(tour);
     } catch (error) {
         console.log(error);
     }
@@ -133,7 +122,7 @@ const updateTourData = async (req,res)=>{
           };
           console.log(updatedTour,file);
           await TourModal.findByIdAndUpdate(id, updatedTour, { new: true });
-          res.json(updatedTour);
+          return res.json(updatedTour);
     } catch (error) {
         console.log(error);
     }
@@ -177,7 +166,7 @@ const getRelatedTourByTag = async (req,res)=>{
         const tours = await TourModal.find({tags: { $in:tags }})
         return res.status(200).json(tours); 
     } catch (error) {
-        console.log(error);
+        
         return res.status(404).json(error); 
     }
 }
@@ -199,39 +188,40 @@ const getRelatedTourByTag = async (req,res)=>{
             tour.likes.push(req.userId);
         }else{
             tour.likes = tour.likes.filter((id)=> id !== String(req.userId) );
-        }
-     
+        }     
     
         const updatedTour = await TourModal.findByIdAndUpdate(id,tour,{new:true});
-        return res.status(200).json(updatedTour); 
+        return res.json(updatedTour); 
      } catch (error) {
         return res.status(404).json(error); 
      }
-
-
-
-
-  }
+ }
 
 
 
 
 // cloud image chekcing 
 const Cloud =  async(req,res)=>{    
-    // const file = await upload.TourImage(req.files.imageFile.tempFilePath);
-//     const tour = req.body; 
-//    const result = {
-//        ...tour,
-//        image:file,
-//        creator:req.userId,
-//        createdAt:new Date().toISOString(), 
-//    }
-    // deeleted cloud photo
-    const {imageFile} = req.body;
-    const file = await upload.RemoveTourImage(imageFile);
- 
-res.status(200).json(file);
+    const tour = req.body;
+    console.log(tour);
+    // const file = await upload.TourImage(tour.imageFile); 
+    const newTour = new TourModal({
+        ...tour,
+        // imageFile:file,
+        creator: req.userId,
+        createdAt: new Date().toISOString(),
+    });
+    try {
+        await newTour.save();       
+        return res.status(200).json({ message: "POST CREATE SUCCESSFULLY DONE",newTour}); 
+
+    } catch (error) {
+        return res.status(404).json({ message: "Something went wrong" });       
+    } 
+    
 }
+ 
+
 
 
 
@@ -253,4 +243,5 @@ module.exports ={
     getRelatedTourByTag,
     LikeAtour,
     Cloud,
+  
 }

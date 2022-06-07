@@ -17,8 +17,9 @@ import DetailsTour from './pages/tour/DetailsTour';
 import Dashboard from './pages/tour/Dashboard';
 import PrivateRoute from './components/PrivateRoute';
 import TagTour from './pages/tour/TagTour';
+import TourFooter from './components/TourFooter';
 function App() {
-  const {user}= useSelector(state => state.auth)
+ 
   const dispatch = useDispatch();
   const Isuser = JSON.parse(localStorage.getItem("profile"));
   useEffect(() => {
@@ -61,6 +62,7 @@ function App() {
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login />} />
       </Routes>
+       
     </div>    
     </BrowserRouter>
   );

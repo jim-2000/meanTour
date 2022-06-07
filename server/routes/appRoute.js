@@ -1,8 +1,8 @@
 const express = require('express');
-const { getAllTour,CrateTour, deleteAlltour, SingleTourDelete, SingelTour, getTourByUser, Cloud, updateTourData, getTourBySearch, getTourByTag, getRelatedTourByTag, LikeAtour } = require('../controller/tour');
+const { getAllTour,CrateTour, deleteAlltour, SingleTourDelete, SingelTour, getTourByUser, Cloud, updateTourData, getTourBySearch, getTourByTag, getRelatedTourByTag, LikeAtour, PostPromice, PostPromice2 } = require('../controller/tour');
 const { registerNewUser,allUser,signIn, GoogleLogin, AllUserDeleted } = require('../controller/user');
 const { auth } = require('../middleware/authmiddlewear');
-const {redis_set_tour} = require('../middleware/redis/tourRedis') 
+
  
 const router = express.Router();
 //
@@ -28,13 +28,14 @@ router.route("/tag/:tag").get(getTourByTag);
 //
 router.route("/relatedTours").post(getRelatedTourByTag);
 //
-router.route('/cloud').post(Cloud,);
+router.route('/cloud').post(auth,Cloud);
+ 
 
 
 
 
+// AUTHENTICATION
 
-//
 router.route('/join/signup/').post(registerNewUser);
 //
 router.route('/join/login/').post(signIn);

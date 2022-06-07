@@ -19,9 +19,7 @@ export const createTour = createAsyncThunk(
             });
             navigate("/");
             return response.data;
-      } catch (err) {
-        toast.error(err.response.data['meassage'].toString());
-        
+      } catch (err) {        
         return rejectWithValue(err.response.data);
       }
     }
@@ -96,10 +94,11 @@ export const UpdateTour = createAsyncThunk(
 
 export const DeleteATour = createAsyncThunk(
   "tour/deleteATour",
-  async ({id,toast},{ rejectWithValue }) => {
+  async ({id,toast,navigate},{ rejectWithValue }) => {
     try {
       const response = await api.ApiDeleteSingelTour(id); 
-      toast.success("TOUR DELETED SUCCESSFULLY");           
+      toast.success("TOUR DELETED SUCCESSFULLY");  
+      navigate("/dashboard");         
       return response.data;
     } catch (err) {    
       return rejectWithValue(err.response.data);
@@ -180,6 +179,7 @@ const TourSlice = createSlice({
     initialState, 
     reducers:{
       setCurrentPage:(state,action)=>{
+        console.log(action);
         state.currentPage = action.payload
       }
     },
@@ -261,7 +261,7 @@ const TourSlice = createSlice({
         console.log("action",action);
         const {arg: { id },} = action.meta;
         if (id) {
-          state.userTours = state.userTours.map((item)=>item._id ==id ? action.payload :item)
+          state.userTours = state.userTours.map((item)=>item._id ===id ? action.payload :item)
           state.tours = state.tours.map((item) => item._id === id ? action.payload :item);
         }
         state.error =""   
@@ -312,7 +312,7 @@ const TourSlice = createSlice({
         console.log("action",action);
         const {arg: { id },} = action.meta;
         if (id) {
-          state.userTours = state.userTours.map((item)=>item._id ==id ? action.payload :item)
+          state.userTours = state.userTours.map((item)=>item._id ===id ? action.payload :item)
           state.tours = state.tours.map((item) => item._id === id ? action.payload :item);
         }
         state.error =""   

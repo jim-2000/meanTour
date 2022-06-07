@@ -28,8 +28,7 @@ export const login = createAsyncThunk(
         navigate("/");
         return response.data;
       } catch (err) {
-        toast.error(err.response.data['meassage'].toString());
-        
+        toast.error(err.response.data['meassage'].toString());        
         return rejectWithValue(err.response.data);
       }
     }

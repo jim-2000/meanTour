@@ -6,6 +6,8 @@ import { MDBBtn, MDBCard, MDBCardBody, MDBCardImage, MDBCardText, MDBContainer, 
 import moment from "moment";
 import MySpinner from '../../components/MySpinner'
 import RelatedTagTours from '../../components/RelatedTours'
+import TourFooter from '../../components/TourFooter'
+import DisqusThread from '../../components/DisqusThread'
  
 const Singeltour = () => {
   const navigate = useNavigate()
@@ -29,7 +31,7 @@ useEffect(()=>{
   }
   return (
     <div>
-    <MDBContainer>
+    <MDBContainer className='mb-3'>
       <MDBCard className="mb-3 mt-2">
         <MDBCardImage
           position="top"
@@ -52,8 +54,12 @@ useEffect(()=>{
             />
           </MDBBtn>
           <h3>{tour.title}</h3>
+        
           <span>
             <p className="text-start tourName">Created By: {tour.name}</p>
+          </span>
+          <span>
+            <p className="text-start tourName">Destination: {tour.destination}</p>
           </span>
           <div style={{ float: "left" }}>
             <span className="text-start">
@@ -76,12 +82,15 @@ useEffect(()=>{
             {tour.description}
           </MDBCardText>
         </MDBCardBody>
-        <div>
+        <div className='mb-3'>
           <RelatedTagTours relatedTours={relatedTours} tourId={id} />    
         </div>
       </MDBCard>
-      {/* <DisqusThread id={id} title={tour.title} path={`/tour/${id}`} /> */}
+      <DisqusThread id={id} title={tour.title} path={`/tour/${id}`} />
     </MDBContainer>
+    <div className='my-5'>
+       <TourFooter /> 
+     </div>
   </div>
   );
 }

@@ -6,6 +6,7 @@ import { DeleteATour, getTourByUser } from '../../redux/slice/tourSlice'
 import './styles/dashboard.css';
 import MySpinner from '../../components/MySpinner'
 import { toast } from 'react-toastify'
+import TourFooter from '../../components/TourFooter'
 
 //
 const Dashboard = () => {
@@ -13,6 +14,7 @@ const Dashboard = () => {
     const {userTours,loading} = useSelector((state)=>state.tour);
   const userId = user?.result._id;
    const dispatch= useDispatch();
+   const navigate = useNavigate();
 //
 useEffect(()=>{
     if (userId) {      
@@ -26,9 +28,9 @@ const excerpt = (str,max)=>{
   return str;
 }
 const handleDelete = (id)=>{
-  // if (window.confirm("Are you sure you want to delete this post ?")) {
-  // }
-  dispatch(DeleteATour({id,toast}))    
+  if (window.confirm("Are you sure you want to delete this post ?")) {
+    dispatch(DeleteATour({id,toast,navigate}))    
+  }
 }
 
   return (  
@@ -102,6 +104,9 @@ const handleDelete = (id)=>{
         </MDBCardGroup>
         ))
       }
+      <div className='my-5'>
+       <TourFooter /> 
+     </div>
     </div>   
   )
 }

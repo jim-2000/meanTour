@@ -1,14 +1,12 @@
 import React from "react";
 import { MDBPagination, MDBPaginationItem, MDBBtn } from "mdb-react-ui-kit";
-import { useDispatch, useSelector } from 'react-redux'
 
 const Pagination = ({
   setCurrentPage,
   currentPage,
   numberOfPages,
- 
+  dispatch,
 }) => {
-  const dispatch = useDispatch();
   const renderPagination = () => {
     if (currentPage === numberOfPages && currentPage === 1) return null;
     if (currentPage === 1) {

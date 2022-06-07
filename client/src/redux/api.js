@@ -6,7 +6,9 @@ const config = {
       "Content-type":"application/json"
     }
   };
+// const API_URL = 'https://tourpediaa.herokuapp.com/api/v1';
 const API_URL = 'http://localhost:4000/api/v1';
+
 const API = axios.create({baseURL: API_URL,config});
 //
 API.interceptors.request.use((req)=>{

@@ -15,6 +15,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { TagTours } from '../../redux/slice/tourSlice';
 import MySpinner from '../../components/MySpinner';
+import TourFooter from '../../components/TourFooter';
 const TagTour = () => {
     const { tag } = useParams();
     const dispatch =  useDispatch();
@@ -47,7 +48,8 @@ const TagTour = () => {
       padding: "120px",
       maxWidth: "900px",
       alignContent: "center",
-      backgroundColor:"gray"
+      backgroundColor:"gray",
+       
     }}
   >
     <h3 className="text-center">Tours with tag: {tag}</h3>
@@ -92,6 +94,9 @@ const TagTour = () => {
           </MDBCard>
         </MDBCardGroup>
       ))}
+      <div className='my-5'>
+       <TourFooter /> 
+     </div>
   </div>
   )
 }

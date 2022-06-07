@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { MDBCard,MDBCardBody,
     MDBInput,MDBCardFooter,
     MDBValidation,MDBBtn,
-    MDBIcon,MDBSpinner
+    MDBIcon,MDBSpinner, MDBCardHeader, MDBCardTitle, MDBCardText
  } from 'mdb-react-ui-kit'
 
 import { Link,useNavigate } from 'react-router-dom'
@@ -72,7 +72,11 @@ useEffect(() => {
             <MDBIcon fas icon='user-circle' className='fa-2x' />
             <h4  className="mt-3">Log in</h4>
             <MDBCardBody >
-                <MDBValidation onSubmit={handleSubmit} noValidate className='row g-3 mb-2'>
+                <MDBCardHeader>
+                    <MDBCardTitle>Please Use Google Auth For Now </MDBCardTitle>
+                    <MDBCardText>Our Custom Auth is still under constraction... </MDBCardText>
+                </MDBCardHeader>
+                {/* <MDBValidation onSubmit={handleSubmit} noValidate className='row g-3 mb-2'>
                     <div className='col-md-12 '>
                         <MDBInput 
                         label=" Email "
@@ -121,7 +125,7 @@ useEffect(() => {
                         </MDBBtn>
                     </div>
 
-                </MDBValidation>
+                </MDBValidation> */}
                 <GoogleLogin 
                 style={{
                     margin:"15px 0"
@@ -147,9 +151,9 @@ useEffect(() => {
                 />
             </MDBCardBody>
             <MDBCardFooter>
-                <Link to={"/register"}>
+                {/* <Link to={"/register"}> */}
                 <p>Don't have an account ? Sign up</p>
-                </Link>
+                {/* </Link> */}
             </MDBCardFooter>
         </MDBCard>
     </div>

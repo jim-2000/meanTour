@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../model/userModel');
 
-const secret = 'secret';
+const secret = "secret";
 
 
 
@@ -48,8 +48,7 @@ const signIn = async (req, res) => {
             return res.status(400).json({meassage:"password is not correct"})
         };
         const token = jwt.sign({email:oldUser.email, id:oldUser._id},secret,{expiresIn:"1h"})
-        res.status(200).json({meassage:"User login successfully",result:oldUser,token});
-        
+        res.status(200).json({meassage:"User login successfully",result:oldUser,token});        
 
     } catch (error) {
         console.log(error);
@@ -71,11 +70,11 @@ const signIn = async (req, res) => {
             name,
             googleId,             
         })
-        return res.status(200).json({result,token})       
+        return res.status(200).json({meassage:"User login successfully",result,token})       
 
 
     } catch (error) {
-        return res.status(400).json({meassage:"Something is wrong"})
+        return res.status(400).json({meassage:"Something is wrong",})
     }
 }
 

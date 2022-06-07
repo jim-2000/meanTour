@@ -7,14 +7,21 @@ import { Link, useLocation } from 'react-router-dom'
 import CardTour from '../../components/cardTour';
 import MySpinner from '../../components/MySpinner';
 import Pagination from '../../components/Pagination';
+import TourFooter from '../../components/TourFooter';
+
+// query function
+
+const useQuery = ()=>{
+  return new URLSearchParams(useLocation().search);
+}
 
 const Home = () => {
   const dispatch = useDispatch();
   const {tours,loading,currentPage,numberOfPages} = useSelector((state)=>({...state.tour,}));
 
-  // const query = useQuery();
-  // const searchQuery = query.get("searchQuery");
-  const searchQuery = "searchQuery";
+  const query = useQuery();
+  const searchQuery = query.get("searchQuery");
+ 
   const location = useLocation();
 
 
@@ -22,7 +29,7 @@ const Home = () => {
 
   //
     useEffect(()=>{
-      dispatch(getTour(currentPage));
+      dispatch(getTour(Number(currentPage)));   
     },[currentPage])
 
 
@@ -37,15 +44,14 @@ const Home = () => {
     padding: "15px",
     maxWidth: "1000px",
     alignContent: "center",
-     }}>
+
+     }} className="mb-3">
       <MDBRow className='mt-5'>
         
         {
-          tours.length === 0 && (
+          tours.length === 0  && location.pathname !== "/" && (
             <MDBTypography classID='text-center mb-0' tag={"h2"}>
-              No Tours Found
-              <br />
-              it's loading..
+            We couldn't find any mathces for this {searchQuery} 
             </MDBTypography>
           )
         }
@@ -53,21 +59,26 @@ const Home = () => {
           <MDBContainer >
             <MDBRow className='row-cols-1 row-cols-md-3 g-2'>
               {
-              tours && tours.map((item,index)=> <CardTour  key={index} {...item} /> )
+              tours && tours.map((item)=> <CardTour  key={item._id} {...item} /> )
               }
             </MDBRow>
           </MDBContainer>
         </>
       </MDBRow>
-      {tours.length > 0 &&  searchQuery !=null && (
-        <Pagination
+      <div className='my-3'>
+        {tours.length > 0 &&  !searchQuery  && (
+          <Pagination
           setCurrentPage={setCurrentPage}
           numberOfPages={numberOfPages}
           currentPage={currentPage}
+          dispatch={dispatch}        
+          />
+          )}
+      </div>
   
-        />
-      )}
-     
+     <div className='mt-3'>
+       <TourFooter /> 
+     </div>
    </div>
   )
 }

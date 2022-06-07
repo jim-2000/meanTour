@@ -15,6 +15,7 @@ import {
   import { useDispatch, useSelector } from "react-redux";
     import { createTour, UpdateTour } from '../../redux/slice/tourSlice';
 import MySpinner from '../../components/MySpinner';
+import TourFooter from '../../components/TourFooter';
 
   //
 
@@ -279,6 +280,9 @@ if (loading) {
                 </MDBValidation>
             </MDBCardBody>
             </MDBCard>
+        <div className='my-5'>
+            <TourFooter /> 
+        </div>
 
     </div>
   )
