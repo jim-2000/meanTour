@@ -274,6 +274,7 @@ if (loading) {
                     color='danger'
                     onClick={()=>{
                         handleclear();
+                        navigate('/')
                     }}
                     >Cancel</MDBBtn>
                     </div>

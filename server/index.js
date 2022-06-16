@@ -1,18 +1,18 @@
-const port = process.env.PORT || 4000;
 const express = require('express');
+const port = process.env.PORT || 4000;
 const connectDb = require('./db/connect');
-const app = express();
+const cors = require('cors'); 
 const dotenv = require('dotenv').config()
 const appRoute = require('./routes/appRoute');
 const morgan = require('morgan');
-const cors = require('cors'); 
 const fileUpload = require('express-fileupload')
-const server = require("http").createServer(app)
+const app = express();
+ 
 
 // configure app to use morgan logger
 app.use(morgan('dev'));
-app.use(express.json({limit:"200mb", extended:false}));
-app.use(express.urlencoded({ limit:"200mb", extended:false}));
+app.use(express.json({limit:"200mb", extended:true}));
+app.use(express.urlencoded({ limit:"30mb", extended:true}));
 const corsOptions ={
     origin:'http://localhost:3000', 
     credentials:true,            //access-control-allow-credentials:true
@@ -23,10 +23,12 @@ app.use(cors(corsOptions));
 app.use(fileUpload({
     useTempFiles:true,
 }))
+
+app.use('/api/v1/tour', appRoute);
+//
 app.get('/',(req,res)=>{
     res.send("WELCOME TO TOUR API")
 })
-app.use('/api/v1/tour', appRoute);
 //
 
 
@@ -51,8 +53,6 @@ app.use('/api/v1/tour', appRoute);
 // username = jim-2000 pass = m3ZwxyQFlB0UkemJ;
 //mongodb+srv://jim-2000:<password>@cluster0.zbhug.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 //
-
-server.on("request",app)
 const start = async () => {
     try {
         await connectDb();             
@@ -62,8 +62,6 @@ const start = async () => {
         console.log(error);
     }
 }
-
-
 //
  
 start();

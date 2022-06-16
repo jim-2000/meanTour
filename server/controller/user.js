@@ -18,15 +18,17 @@ const registerNewUser = async (req, res) => {
         if (oldUser) {
             return res.status(400).json({meassage:"User alrady EXIST"})
         }
-        const hashedPassword = await bcrypt.hash(password,12);
+        const salt = await bcrypt.genSalt(12);
+        const hashedPassword = await bcrypt.hash(password,salt);
         const result = await User.create({
             email,
             name:`${firstName} ${lastName}`,
             password:hashedPassword,
         })
-        const  token = jwt.sign({email: result.email,name: result.name,password: result.password,id:result._id},secret,{expiresIn:"1h"})
-
-        return res.status(201).json({meassage:"User creation done",result:result,token:token})
+        console.log(result);
+        const  token = jwt.sign({email: result.email,name: result.name,id:result._id},secret,{expiresIn:"15d"})
+        console.log(token);
+        return res.json({meassage:"User creation done",result:result,token:token})
     } catch (error) {
         console.log(error);
         res.status(201).json({meassage:error})
@@ -148,9 +150,10 @@ const deleteUser = async (req, res) =>{
 
 // delete all user
 const AllUserDeleted = async (req, res) =>{
+    console.log("DELETEW ALL");
     try { 
         let user = await User.deleteMany();        
-        res.status(200).json({message : 'All user delete succesfully',data:user});
+        return res.status(200).json({message : 'All user delete succesfully',data:user});
     } catch (error) {
         res.status(500).json({message: error.message});
     }

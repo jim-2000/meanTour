@@ -1,3 +1,4 @@
+// const API_URL = 'https://tourpediaa.herokuapp.com/api/v1';
 import axios from 'axios';
 const config = {
     headers: {
@@ -6,18 +7,17 @@ const config = {
       "Content-type":"application/json"
     }
   };
-// const API_URL = 'https://tourpediaa.herokuapp.com/api/v1';
 const API_URL = 'http://localhost:4000/api/v1';
 
 const API = axios.create({baseURL: API_URL,config});
 //
-API.interceptors.request.use((req)=>{
-    if (localStorage.getItem("profile")) {
-        req.headers.Authorization = `Bearer ${
-            JSON.parse(localStorage.getItem('profile')).token
-        }`;
-    }
-    return req;
+API.interceptors.request.use((req) => {
+  if (localStorage.getItem("profile")) {
+    req.headers.Authorization = `Bearer ${
+      JSON.parse(localStorage.getItem("profile")).token
+    }`;
+  }
+  return req;
 });
 
 // hit the login url

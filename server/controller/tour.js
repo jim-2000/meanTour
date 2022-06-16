@@ -7,22 +7,23 @@ const {upload} = require("./coudinary")
 const CrateTour = async (req, res) => {
     const tour = req.body;
     const file = await upload.TourImage(tour.imageFile); 
-   
-    const newTour = new TourModal({
-        ...tour,
-        imageFile:file,
-        creator: req.userId,
-        createdAt: new Date().toISOString(),
-      });
-    
-      try {
-        await newTour.save();
-        res.status(201).json(newTour);
-
-      } catch (error) {
-        return res.status(404).json({ message: "Something went wrong" });       
-      } 
-  
+    const newTour = new TourModal(
+        {
+            ...tour,
+            imageFile:file,
+            creator: req.userId,
+            createdAt: new Date().toISOString(),
+        }
+    ); 
+    //
+    TourModal.create(newTour,(err,tour)=>{
+        if(err){
+            console.log(err);
+             res.status(400).json(err).end();
+        }
+        res.json(tour).end();    
+    })
+      
 }
 
 //
@@ -52,7 +53,7 @@ const SingelTour = ('/' , async(req,res)=>{
     const {id} = req.params;
     try {
         const tour = await TourModal.findById(id);
-        res.status(202).json(tour);
+        res.json(tour);
     } catch (error) {
         res.status(500).json({message: error.message});
     }
@@ -83,21 +84,25 @@ const deleteAlltour = async (req,res)=>{
     }
 }
 
-//
-
-
+// DELETEING TOUR BY ID>>>>>>>>>>>>>>>>>>>>>
 const SingleTourDelete = async (req,res)=>{
     const {id} = req.params;
+    console.log(req.userId);
+
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({message: "Post Id does't not Exist"});
     }
     try {
         const  tour = await TourModal.findByIdAndRemove(id);       
-        res.status(200).json(tour);
+        res.json(tour);
     } catch (error) {
         console.log(error);
+        res.end()
     }
 }
+
+
+
 // updateing tour
 const updateTourData = async (req,res)=>{
     const {id} = req.params;

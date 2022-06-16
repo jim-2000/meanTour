@@ -73,12 +73,13 @@ useEffect(() => {
             <h4  className="mt-3">Log in</h4>
             <MDBCardBody >
                 <MDBCardHeader>
-                    <MDBCardTitle>Please Use Google Auth For Now </MDBCardTitle>
+                    <MDBCardTitle style={{color:"orange"}}>Please Use Google Auth For Now </MDBCardTitle>
                     <MDBCardText>Our Custom Auth is still under constraction... </MDBCardText>
                 </MDBCardHeader>
-                {/* <MDBValidation onSubmit={handleSubmit} noValidate className='row g-3 mb-2'>
+                { <MDBValidation onSubmit={handleSubmit} noValidate className='row g-3 mb-2'>
                     <div className='col-md-12 '>
                         <MDBInput 
+                        disabled={true}
                         label=" Email "
                         type={"email"}
                         name="email"
@@ -93,6 +94,7 @@ useEffect(() => {
                     </div>
                     <div className='col-md-12 '>
                         <MDBInput 
+                        disabled={true}
                         label=" Password "
                         type={"password"}
                         name="password"
@@ -125,7 +127,8 @@ useEffect(() => {
                         </MDBBtn>
                     </div>
 
-                </MDBValidation> */}
+                </MDBValidation> 
+            }
                 <GoogleLogin 
                 style={{
                     margin:"15px 0"
