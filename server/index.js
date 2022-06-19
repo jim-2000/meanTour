@@ -5,7 +5,8 @@ const cors = require('cors');
 const dotenv = require('dotenv').config()
 const appRoute = require('./routes/appRoute');
 const morgan = require('morgan');
-const fileUpload = require('express-fileupload')
+const fileUpload = require('express-fileupload');
+const { cloudinaryConfig } = require('./db/cloudyConfig');
 const app = express();
  
 
@@ -55,7 +56,8 @@ app.get('/',(req,res)=>{
 //
 const start = async () => {
     try {
-        await connectDb();             
+        await connectDb();  
+          cloudinaryConfig();           
         app.listen(port, () => console.log(`Example app listening on port ${port}`))
         
     } catch (error) {
