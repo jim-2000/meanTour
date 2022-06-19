@@ -49,7 +49,7 @@ const signIn = async (req, res) => {
         if (!isMatch) {
             return res.status(400).json({meassage:"password is not correct"})
         };
-        const token = jwt.sign({email:oldUser.email, id:oldUser._id},secret,{expiresIn:"1h"})
+        const token = jwt.sign({email:oldUser.email, id:oldUser._id},secret,{expiresIn:"15d"})
         res.status(200).json({meassage:"User login successfully",result:oldUser,token});        
 
     } catch (error) {

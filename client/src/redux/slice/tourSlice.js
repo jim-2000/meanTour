@@ -80,7 +80,7 @@ export const UpdateTour = createAsyncThunk(
           draggable: true,
           progress: undefined,
           });
-          navigate("/");
+          navigate("/dashboard");
           return response.data;
     } catch (err) {
       toast.error(err.response.data['meassage'].toString());

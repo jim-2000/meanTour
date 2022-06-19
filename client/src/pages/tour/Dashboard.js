@@ -49,6 +49,7 @@ const handleDelete = (id)=>{
             <MySpinner />
         )  
       }
+        <h4 className='text-center'>Total Tour:{userTours.length}</h4>
       {
         userTours && userTours.map((item)=>(
           <MDBCardGroup key={item._id}>

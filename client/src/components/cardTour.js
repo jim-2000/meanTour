@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   MDBCard,
   MDBCardBody,
@@ -17,6 +17,7 @@ import { LikeTour, SearchTour } from '../redux/slice/tourSlice';
 
 
 const CardTour = ({imageFile,description,title,tags,_id,name,likes}) => {
+  const [like, setLike] = useState(false);
   const {user} = useSelector((state)=>({...state.auth}));
   const dispatch = useDispatch()
 
@@ -33,7 +34,7 @@ const CardTour = ({imageFile,description,title,tags,_id,name,likes}) => {
     if (likes.length > 1) {
       return likes.find((like) => like === userId) ? (
         <>
-          <MDBIcon fas icon="thumbs-up" />
+          <MDBIcon fas icon="thumbs-up"  />
           &nbsp;
           {likes.length > 2 ? (
             <MDBTooltip
@@ -82,12 +83,19 @@ const CardTour = ({imageFile,description,title,tags,_id,name,likes}) => {
           ))}
               <MDBBtn 
               color="none"
-              style={{float:"right"}} tag={"a"} onClick={!user?.result ? null : handleLike}>
+              style={{float:"right"}} tag={"a"} 
+              onClick={!user?.result ? null : ()=>{
+                 handleLike();
+                 setLike(true);                  
+              }}
+              className= {`btn btn-sm ${like ? "btn-primary" :"btn-outline-primary"} `}
+              
+              >
                     
                 {
                     !user?.result ? (
-                      <MDBTooltip title="Please login to like tour" tag="a">
-                      <Likes />
+                     <MDBTooltip title="Please login to like tour" tag="a">
+                      <Likes  />
                     </MDBTooltip>
                     ):(
                       <Likes />

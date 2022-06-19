@@ -7,7 +7,6 @@ const {upload} = require("./coudinary")
 const CrateTour = async (req, res) => {
     const tour = req.body;
     const file = await upload.TourImage(tour.imageFile); 
-    console.log(file,"FILE");
     const newTour = new TourModal(
         {
             ...tour,

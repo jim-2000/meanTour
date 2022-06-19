@@ -30,22 +30,22 @@ import TourFooter from '../../components/TourFooter';
     imageFile: "",
     tags: [],
   }
-const AddEditTour = (props) => {
+const AddEditTour = () => {
     const [tourData, setTourData] = useState(initialState);
     const {title,description,duration,maxGroupSize,tags,destination,imageFile} = tourData;
     const tourDuration =[3,5,7,10,15,20,30];
     const tourmaxGroupSize =[3,5,7,10,15,20,30,50,100];
-//
+    //
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {id} = useParams();
     const {error,loading,user} = useSelector(state => state.auth);
-    const {tours} = useSelector(state => ({...state.tour}));
+    const {userTours} = useSelector(state => ({...state.tour}));
 
 useEffect(() => {
     if (id) {
-        const SingelTour =tours.find((tour)=>tour._id === id);
-        setTourData({...SingelTour})        
+        const SingelTour =userTours.find((tour)=>tour._id === id);
+        setTourData({...SingelTour})           
     }
 }, [id])
 
