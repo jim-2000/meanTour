@@ -7,6 +7,7 @@ const {upload} = require("./coudinary")
 const CrateTour = async (req, res) => {
     const tour = req.body;
     const file = await upload.TourImage(tour.imageFile); 
+    console.log(file,"FILE");
     const newTour = new TourModal(
         {
             ...tour,
@@ -19,9 +20,9 @@ const CrateTour = async (req, res) => {
     TourModal.create(newTour,(err,tour)=>{
         if(err){
             console.log(err);
-             res.status(400).json(err).end();
+             res.status(400).json(err); 
         }
-        res.json(tour).end();    
+        res.json(tour);    
     })
       
 }
@@ -106,13 +107,14 @@ const SingleTourDelete = async (req,res)=>{
 // updateing tour
 const updateTourData = async (req,res)=>{
     const {id} = req.params;
+    console.log(req.body,"body");
     const { title, description, creator, imageFile, tags } = req.body;
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({message: "Id does't not Exist"});
     }   
     let file;
     try {
-         imageFile && await upload.TourImage(imageFile);
+        file = imageFile && await upload.TourImage(imageFile);
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(404).json({ message: `No tour exist with id: ${id}` });
           }
@@ -125,7 +127,6 @@ const updateTourData = async (req,res)=>{
             imageFile:file,
             _id: id,
           };
-          console.log(updatedTour,file);
           await TourModal.findByIdAndUpdate(id, updatedTour, { new: true });
           return res.json(updatedTour);
     } catch (error) {
@@ -202,7 +203,17 @@ const getRelatedTourByTag = async (req,res)=>{
      }
  }
 
-
+// GET TOUR BY Destination>>>>>>>>>>>>>>>>>
+const getTourByDestination = async (req,res)=>{
+    const {destination} = req.params;
+    try {
+        const tours = await TourModal.find({destination})
+        return res.status(200).json(tours); 
+    } catch (error) {
+        console.log(error);
+        return res.status(404).json(error); 
+    }
+}
 
 
 // cloud image chekcing 
@@ -248,5 +259,6 @@ module.exports ={
     getRelatedTourByTag,
     LikeAtour,
     Cloud,
+    getTourByDestination,
   
 }

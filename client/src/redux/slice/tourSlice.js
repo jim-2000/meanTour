@@ -18,7 +18,6 @@ export const createTour = createAsyncThunk(
             progress: undefined,
             });
             navigate("/");
-            console.log(response.data);
         return response.data;
       } catch (err) {        
         return rejectWithValue(err.response.data);
@@ -241,7 +240,6 @@ const TourSlice = createSlice({
           },
         [DeleteATour.fulfilled]:(state,action) => {
         state.loading = false
-        console.log("action",action);
         const {arg: { id },} = action.meta;
         if (id) {
           state.userTours = state.userTours.filter((item) => item._id !== id);
@@ -254,18 +252,22 @@ const TourSlice = createSlice({
             state.error =action.payload.meassage       
         },
         [UpdateTour.pending]:(state,action) => {
-          state.loading = true      
-          console.log("pending",action);   
+          state.loading = true    
           },
         [UpdateTour.fulfilled]:(state,action) => {
-        state.loading = false
-        console.log("action",action);
-        const {arg: { id },} = action.meta;
-        if (id) {
-          state.userTours = state.userTours.map((item)=>item._id ===id ? action.payload :item)
-          state.tours = state.tours.map((item) => item._id === id ? action.payload :item);
-        }
-        state.error =""   
+          state.loading = false;
+          const {
+            arg: { id },
+          } = action.meta;
+          if (id) {
+            state.userTours = state.userTours.map((item) =>
+              item._id === id ? action.payload : item
+            );
+            state.tours = state.tours.map((item) =>
+              item._id === id ? action.payload : item
+            );
+          }
+          state.error =""   
         },
         [UpdateTour.rejected]:(state,action) => {
             state.loading = false 

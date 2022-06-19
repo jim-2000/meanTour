@@ -51,7 +51,6 @@ const Login = () => {
         const googleId = response?.googleId;
         const result = {email,name,token,googleId};
         
-        console.log(response); 
         dispatch(google({result,navigate,toast}))
     }
     const googleFailure=  (err) => {       
@@ -79,7 +78,7 @@ useEffect(() => {
                 { <MDBValidation onSubmit={handleSubmit} noValidate className='row g-3 mb-2'>
                     <div className='col-md-12 '>
                         <MDBInput 
-                        disabled={true}
+                        disabled={false}
                         label=" Email "
                         type={"email"}
                         name="email"
@@ -94,7 +93,7 @@ useEffect(() => {
                     </div>
                     <div className='col-md-12 '>
                         <MDBInput 
-                        disabled={true}
+                        disabled={false}
                         label=" Password "
                         type={"password"}
                         name="password"
@@ -111,6 +110,7 @@ useEffect(() => {
                         <MDBBtn style={{width:"100%"}} 
                         color='dark'
                         type='submit'
+                        disabled={false}
                         
                         >
                             {
@@ -154,9 +154,9 @@ useEffect(() => {
                 />
             </MDBCardBody>
             <MDBCardFooter>
-                {/* <Link to={"/register"}> */}
+                <Link to={"/register"}>
                 <p>Don't have an account ? Sign up</p>
-                {/* </Link> */}
+                </Link>
             </MDBCardFooter>
         </MDBCard>
     </div>

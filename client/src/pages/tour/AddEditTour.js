@@ -54,7 +54,7 @@ const handleSubmit = () => {
     //
     try {
         if (title && description  ) {       
-        const updatedTourData = {...tourData,name:user.result.name,price:555,imageFile:imageFile};
+        const updatedTourData = {...tourData,name:user?.result?.name,price:555,imageFile:imageFile};
             if (!id) {
                 dispatch(createTour({updatedTourData, navigate, toast}));
             }else{
@@ -232,7 +232,8 @@ if (loading) {
                         name='tags'
                         value={tags}
                         onAdd={(chip)=>{
-                            setTourData((prevState) => ({...prevState,tags:prevState.tags.concat(chip)}));
+                            setTourData({ ...tourData, tags: [...tourData.tags, chip] });
+                            // setTourData((prevState) => ({...prevState,tags:prevState.tags.concat(chip)}));
                         }}
                         onDelete={(chip,index)=>{
                             setTourData((prevState) => ({...prevState,tags:prevState.tags.filter((i)=>i!==chip)}));

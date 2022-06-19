@@ -13,7 +13,6 @@ const auth = async (req,res,next)=>{
             if(token && isCustomAuth){
                 decodedData =   jwt.verify(token,secret);
                 req.userId = decodedData?.id;            
-                next();            
             }
             else{
                 decodedData =  jwt.decode(token);
@@ -23,13 +22,12 @@ const auth = async (req,res,next)=>{
             }
             next();
         } catch (error) {
-            console.log(error);
-            res.end()
+            console.log(error);            
         }
         
     
     if(!token){
-        res.status(404).json({"meassage":"Token does't Exist" }).end()
+        res.status(404).json({"meassage":"Token does't Exist" });
     }
 }
 module.exports={

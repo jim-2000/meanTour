@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllTour,CrateTour, deleteAlltour, SingleTourDelete, SingelTour, getTourByUser, Cloud, updateTourData, getTourBySearch, getTourByTag, getRelatedTourByTag, LikeAtour, PostPromice, PostPromice2 } = require('../controller/tour');
+const { getAllTour,CrateTour, deleteAlltour, SingleTourDelete, SingelTour, getTourByUser, Cloud, updateTourData, getTourBySearch, getTourByTag, getRelatedTourByTag, LikeAtour, PostPromice, PostPromice2, getTourByDestination } = require('../controller/tour');
 const { registerNewUser,allUser,signIn, GoogleLogin, AllUserDeleted } = require('../controller/user');
 const { auth } = require('../middleware/authmiddlewear');
 
@@ -27,8 +27,10 @@ router.route("/search").get(getTourBySearch);
 router.route("/tag/:tag").get(getTourByTag);
 //
 router.route("/relatedTours").post(getRelatedTourByTag);
+// get tour by destination
+router.route("/destination/:destination").get(getTourByDestination);
 //
-router.route('/cloud').post(auth,Cloud);
+// router.route('/cloud').post(auth,Cloud);
  
 
 
@@ -43,9 +45,9 @@ router.route('/join/login/').post(signIn);
 router.route('/join/google/').post(GoogleLogin);
 //
 
-router.route("/users/").get(allUser);
+// router.route("/users/").get(allUser);
 //
-router.route("/users/removeall/").get(AllUserDeleted);
+// router.route("/users/removeall/").get(AllUserDeleted);
 // router.route('/:id').get( ).patch(updateTask).delete( );
 
 module.exports = router;

@@ -1,5 +1,6 @@
-// const API_URL = 'https://tourpediaa.herokuapp.com/api/v1';
 import axios from 'axios';
+const devEnv = process.env.NODE_ENV !== 'production';
+const {REACT_APP_PROD_URL,REACT_APP_DEV_URL} = process.env;
 const config = {
     headers: {
       "Access-Control-Allow-Origin": "*",
@@ -7,9 +8,9 @@ const config = {
       "Content-type":"application/json"
     }
   };
-const API_URL = 'http://localhost:4000/api/v1';
+// const API_URL = 'http://localhost:4000/api/v1';
 
-const API = axios.create({baseURL: API_URL,config});
+const API = axios.create({baseURL: `${devEnv ? REACT_APP_DEV_URL : REACT_APP_PROD_URL }` ,config});
 //
 API.interceptors.request.use((req) => {
   if (localStorage.getItem("profile")) {

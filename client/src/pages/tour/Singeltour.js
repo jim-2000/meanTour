@@ -33,12 +33,16 @@ useEffect(()=>{
     <div>
     <MDBContainer className='mb-3'>
       <MDBCard className="mb-3 mt-2">
+       {
+        tour.imageFile &&       (  
         <MDBCardImage
-          position="top"
-          style={{ width: "100%", maxHeight: "600px" }}
-          src={tour.imageFile}
-          alt={tour.title}
+        position="top"
+        style={{ width: "100%", maxHeight: "600px" }}
+        src={tour.imageFile}
+        alt={tour.title}
         />
+      )
+       }
         <MDBCardBody>
           <MDBBtn
             tag="a"
